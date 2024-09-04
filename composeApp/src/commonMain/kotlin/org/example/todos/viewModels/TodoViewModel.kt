@@ -17,4 +17,18 @@ class TodoViewModel(private val repository: TaskRepository) : ViewModel() {
             tasks.tryEmit(todoList)
         }
     }
+
+    fun deleteTodoItem(todoItem: TodoItem) {
+        viewModelScope.launch {
+            repository.deleteTodo(todoItem)
+            loadData()
+        }
+    }
+
+    fun markTodoAsComplete(id: Int, isCompleted: Boolean) {
+        viewModelScope.launch {
+            repository.markTodoAsComplete(id, isCompleted)
+            loadData()
+        }
+    }
 }

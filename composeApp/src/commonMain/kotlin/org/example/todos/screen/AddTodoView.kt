@@ -21,6 +21,7 @@ fun AddTodoView(
     back: () -> Unit
 ) {
     val title by viewModel.titleText.collectAsState()
+    val description by viewModel.descriptionText.collectAsState()
 
     Column(modifier = modifier.fillMaxWidth().padding(16.dp)) {
         Text(
@@ -33,7 +34,17 @@ fun AddTodoView(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             onValueChange = {
                 viewModel.titleText.value = it
-            })
+            },
+            label = { Text("Title") })
+
+        TextField(
+            value = description,
+            modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
+            onValueChange = {
+                viewModel.descriptionText.value = it
+            },
+            label = { Text("Description") }
+        )
 
         Button(
             onClick = {

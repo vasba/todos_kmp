@@ -61,6 +61,7 @@ kotlin {
             implementation(libs.koin)
             api("moe.tlaster:precompose:1.5.7")
             implementation(compose.material3)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
         }
     }
 }

@@ -15,4 +15,11 @@ interface TodoDao {
 
     @Delete
     suspend fun delete(todoItem: TodoItem)
+
+    @Query("UPDATE todo_items SET isCompleted = :isCompleted WHERE id = :id")
+    suspend fun markAsComplete(id: Int, isCompleted: Boolean)
+
+    @Query("UPDATE todo_items SET startDate = :startDate WHERE id = :id")
+    suspend fun setStartDate(id: Int, startDate: String)
+
 }

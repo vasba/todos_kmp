@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.example.todos.instantiateImpl
+import org.example.todos.db.instantiateImpl
 import platform.Foundation.NSHomeDirectory
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<TodoDatabase> {

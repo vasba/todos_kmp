@@ -1,18 +1,13 @@
 package org.example.todos.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -46,19 +41,39 @@ fun TodoList(viewModel: TodoViewModel, modifier: Modifier = Modifier, onAdd: () 
                 text = "TODOs", fontSize = 22.sp,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            TaskView(tasks = tasks, modifier)
+            TaskView(tasks = tasks, viewModel, modifier)
         }
     }
 }
 
 @Composable
-fun TaskView(tasks: List<TodoItem>, modifier: Modifier = Modifier) {
+fun TaskView(tasks: List<TodoItem>, viewModel: TodoViewModel, modifier: Modifier = Modifier) {
     LazyColumn(
-        contentPadding = // 1.
-        PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        items(tasks) {
-            Text(it.title)
+        items(tasks) { task ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(task.title, fontSize = 18.sp)
+                    Text(task.description, fontSize = 14.sp)
+                }
+                Row {
+                    Checkbox(
+                        checked = task.isCompleted,
+                        onCheckedChange = { isChecked ->
+                            viewModel.markTodoAsComplete(task.id, !task.isCompleted)
+                        }
+                    )
+                    IconButton(onClick = { viewModel.deleteTodoItem(task) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    }
+                }
+            }
         }
     }
 }

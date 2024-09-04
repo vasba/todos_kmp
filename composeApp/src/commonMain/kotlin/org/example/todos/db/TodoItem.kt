@@ -9,5 +9,6 @@ data class TodoItem(
     val title: String,
     val description: String,
     val isCompleted: Boolean = false,
-    val date: String
+    val date: String,
+    val startDate: String
 )
