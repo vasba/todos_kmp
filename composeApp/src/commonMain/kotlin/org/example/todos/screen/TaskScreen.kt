@@ -53,30 +53,44 @@ fun TodoList(viewModel: TodoViewModel, modifier: Modifier = Modifier, onAdd: () 
 @Composable
 fun TaskView(tasks: List<TodoItem>, viewModel: TodoViewModel, modifier: Modifier = Modifier) {
     var editingTodo by remember { mutableStateOf<TodoItem?>(null) }
-    LazyColumn(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        items(tasks) { task ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .clickable { editingTodo = task },
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column {
-                    Text(task.title, fontSize = 18.sp)
-                    Text(task.description, fontSize = 14.sp)
-                }
-                Row {
-                    Checkbox(
-                        checked = task.isCompleted,
-                        onCheckedChange = { isChecked ->
-                            viewModel.markTodoAsComplete(task.id, !task.isCompleted)
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredTasks = tasks.filter { task ->
+        task.title.contains(searchQuery, ignoreCase = true) || task.description.contains(searchQuery, ignoreCase = true)
+    }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        TextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            label = { Text("Search") },
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        )
+        LazyColumn(
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            items(filteredTasks) { task ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .clickable { editingTodo = task },
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(task.title, fontSize = 18.sp)
+                        Text(task.description, fontSize = 14.sp)
+                    }
+                    Row {
+                        Checkbox(
+                            checked = task.isCompleted,
+                            onCheckedChange = { isChecked ->
+                                viewModel.markTodoAsComplete(task.id, !task.isCompleted)
+                            }
+                        )
+                        IconButton(onClick = { viewModel.deleteTodoItem(task) }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Delete")
                         }
-                    )
-                    IconButton(onClick = { viewModel.deleteTodoItem(task) }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete")
                     }
                 }
             }
