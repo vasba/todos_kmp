@@ -31,4 +31,11 @@ class TodoViewModel(private val repository: TaskRepository) : ViewModel() {
             loadData()
         }
     }
+
+    fun updateTodoItem(todoItem: TodoItem) {
+        viewModelScope.launch {
+            repository.updateTodo(todoItem)
+            loadData()
+        }
+    }
 }

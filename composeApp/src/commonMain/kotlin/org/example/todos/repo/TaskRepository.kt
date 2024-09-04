@@ -28,4 +28,8 @@ private val dao: TodoDao by lazy {
     suspend fun setTodoStartDate(id: Int, startDate: String) {
         dao.setStartDate(id, startDate)
     }
+
+    suspend fun updateTodo(todoEntity: TodoItem) {
+        dao.update(todoEntity)
+    }
 }
