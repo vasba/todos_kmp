@@ -23,7 +23,8 @@ class AddTodoViewModel(
             val currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             val formattedDate = currentDateTime.toString()
             
-            taskRepository.addTodo(TodoItem(title = titleText.value, description = "", date = formattedDate, startDate=""))
+            taskRepository.addTodo(TodoItem(title = titleText.value, description = descriptionText.value, 
+                                            date = formattedDate, startDate=""))
         }
     }
 }
